@@ -1,12 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { color } from 'react-native-reanimated';
-
 export default function InfoBar(props) {
   return (
     <View style={styles.infoBarContainer}>
       <View style={styles.scoreContainer}>
-        <Text style={styles.infoBarLabel}>Score: {props.player.score} </Text>
+        <Text style={styles.infoBarLabel}>Score: {props.score} </Text>
       </View>
       <View style={styles.timeContainer}>
         <Text style={styles.infoBarLabel}>Time: {props.time}</Text>
@@ -35,7 +33,7 @@ const styles = StyleSheet.create({
     padding: 15
   },
   infoBarLabel: {
-    fontSize: 15,
+    fontSize: 23,
     fontWeight: 'bold',
     color: '#fff'
   }

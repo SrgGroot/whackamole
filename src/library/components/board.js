@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { StyleSheet, View } from 'react-native';
 import Hole from './hole';
+import InfoBar from './infoBar';
 
 export default class Board extends Component {
   constructor(props) {
@@ -12,43 +13,88 @@ export default class Board extends Component {
     const startingMoleHole = this.generateRandomMoleHole();
     
     this.state = {
+      gameIsActive: true,
+      time: 10,
       currentMoleHole: startingMoleHole,
-      currentScore: score
+      currentScore: score,
+      moleDelayMiliseconds: 300,
     };
   }
+
+  componentDidMount() {
+    this.timerID = setInterval(
+      () => this.tick(),
+      1000
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
+  tick() {
+    if (this.state.time <= 0) {
+      this.setState({
+        gameIsActive: false
+      });
+    } else { 
+      this.setState({
+        time: this.state.time - 1
+      });
+    }
+  }
   
-  generateRandomMoleHole() {
+  generateRandomMoleHole () {
     const randomMoleHole = Math.floor(Math.random() * 8);
     return randomMoleHole;
   }
+
+  changeMoleHole = (hole) => {
+      this.setState({currentMoleHole: hole});
+  }
   
   handleWhack() {
-    this.setState({currentMoleHole: this.generateRandomMoleHole(), currentScore: this.state.currentScore + 1});
-    console.log(this.state.currentScore);
-    //this.setState({currentMoleHole: randomMoleHole, currentScore: this.state.currentScore + 1})
+    //remove the mole from the screen
+    this.setState({currentMoleHole: null, currentScore: this.state.currentScore + 1});
+
+    //keep it from popping a mole in the same hole twice in a row which is visually kind of confusing.
+    let newMoleHole = this.generateRandomMoleHole();
+    if (newMoleHole == this.state.currentMoleHole) {
+      newMoleHole = this.generateRandomMoleHole();
+    } 
+ 
+    //apply the delay that is set by the user in the main menu
+    let delay = this.state.moleDelayMiliseconds; 
+    setTimeout( this.changeMoleHole.bind(this, newMoleHole), delay);
   }
 
   render() {
     return (
-      <View style={styles.boardContainer}>
-        <View style={styles.board}>
-          <View style={styles.boardRow}>
-            <Hole currentMoleHole={this.state.currentMoleHole} registerWhackedMole={this.handleWhack} holeId='0'/>
-            <Hole currentMoleHole={this.state.currentMoleHole} registerWhackedMole={this.handleWhack} holeId='1'/>
-            <Hole currentMoleHole={this.state.currentMoleHole} registerWhackedMole={this.handleWhack} holeId='2'/>
+      <>
+        <InfoBar 
+          score={this.state.currentScore}
+          time={this.state.time}
+        />
+        <View style={styles.boardContainer}>
+          <View style={styles.board}>
+            <View style={styles.boardRow}>
+              <Hole currentMoleHole={this.state.currentMoleHole} registerWhackedMole={this.handleWhack} holeId='0'/>
+              <Hole currentMoleHole={this.state.currentMoleHole} registerWhackedMole={this.handleWhack} holeId='1'/>
+              <Hole currentMoleHole={this.state.currentMoleHole} registerWhackedMole={this.handleWhack} holeId='2'/>
+            </View>
+            <View style={styles.boardRow}>
+              <Hole currentMoleHole={this.state.currentMoleHole} registerWhackedMole={this.handleWhack} holeId='3'/>
+              <Hole currentMoleHole={this.state.currentMoleHole} registerWhackedMole={this.handleWhack} holeId='4'/>
+              <Hole currentMoleHole={this.state.currentMoleHole} registerWhackedMole={this.handleWhack} holeId='5'/>
+            </View>
+            <View style={styles.boardRow}>
+              <Hole currentMoleHole={this.state.currentMoleHole} registerWhackedMole={this.handleWhack} holeId='6'/>
+              <Hole currentMoleHole={this.state.currentMoleHole} registerWhackedMole={this.handleWhack} holeId='7'/>
+              <Hole currentMoleHole={this.state.currentMoleHole} registerWhackedMole={this.handleWhack} holeId='8'/>
+            </View>
           </View>
-          <View style={styles.boardRow}>
-            <Hole currentMoleHole={this.state.currentMoleHole} registerWhackedMole={this.handleWhack} holeId='3'/>
-            <Hole currentMoleHole={this.state.currentMoleHole} registerWhackedMole={this.handleWhack} holeId='4'/>
-            <Hole currentMoleHole={this.state.currentMoleHole} registerWhackedMole={this.handleWhack} holeId='5'/>
-          </View>
-          <View style={styles.boardRow}>
-            <Hole currentMoleHole={this.state.currentMoleHole} registerWhackedMole={this.handleWhack} holeId='6'/>
-            <Hole currentMoleHole={this.state.currentMoleHole} registerWhackedMole={this.handleWhack} holeId='7'/>
-            <Hole currentMoleHole={this.state.currentMoleHole} registerWhackedMole={this.handleWhack} holeId='8'/>
-          </View>
-        </View>
-      </View> 
+        </View> 
+      </>
     );
   }
 }
