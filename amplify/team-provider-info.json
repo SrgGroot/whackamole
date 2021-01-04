@@ -10,6 +10,11 @@
       "StackName": "amplify-whackamole-dev-140308",
       "StackId": "arn:aws:cloudformation:us-east-1:408657384430:stack/amplify-whackamole-dev-140308/8239d3c0-4ebf-11eb-aaab-0a479dbf9bdf",
       "AmplifyAppId": "d5fse9n3l5vh2"
+    },
+    "categories": {
+      "auth": {
+        "whackamolea84ac3a3": {}
+      }
     }
   }
 }

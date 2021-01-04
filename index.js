@@ -1,9 +1,14 @@
 import { registerRootComponent } from 'expo';
-import Amplify from 'aws-amplify'
+import Amplify from '@aws-amplify/core'
 import config from './aws-exports'
 import App from './App';
 
-Amplify.configure(config)
+Amplify.configure({
+  ...config,
+  Analytics: { 
+    disabled: true
+  }
+});
 
 
 // registerRootComponent calls AppRegistry.registerComponent('main', () => App);
