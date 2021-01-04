@@ -13,20 +13,34 @@ import Game from './src/screens/game';
 const Stack = createStackNavigator();
 
 class App extends Component {
+
   async componentDidMount() {
     const user = await Auth.currentAuthenticatedUser()
     console.log('user:', user)
+  }
+  signOut = () => {
+    Auth.signOut()
+      .then(() => this.props.onStateChange('signedOut'))
+      .catch(err => console.log('err: ', err))
   }
   render() {
     return (
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen
-            name="Home"
-            component={Game}
-            options={{ title: 'menu' }}
+          <Stack.Screen 
+            name="Main Menu" 
+            component={Menu} 
+            options={{ 
+              title: "Main Menu"
+            }}
           />
-          <Stack.Screen name="Profile" component={Menu} />
+          <Stack.Screen
+            name="Whack-A-Mole"
+            component={Game}
+            options={{  
+              title: "Whack-A-Mole"
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     );
@@ -40,6 +54,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withAuthenticator(App, {
-  includeGreetings: true
-})
+export default withAuthenticator(App);

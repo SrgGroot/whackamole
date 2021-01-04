@@ -1,13 +1,28 @@
 import React from 'react';
 import { StyleSheet, Text, Button, View } from 'react-native';
-import Game from './game';
+import { Auth } from '@aws-amplify/auth';
 
-export default function Menu() {
+export default function Menu({ navigation }) {
   
   return (
     <View style={styles.container}>
-      <Text>Hello, this is the menu screen, click this button to start the game</Text>
-      <Button title="Start"></Button>
+      <Text>Welcome to Whack a Mole!</Text>
+      <Text>High Scores</Text>
+      <View style="styles.scoreBoard">
+        
+      </View>
+      <Button 
+        title="Start" 
+        onPress={() =>
+          navigation.navigate('Whack-A-Mole', { name: 'Whack-A-Mole!' })
+        }
+      />
+      <Button 
+        title="Sign Out" 
+        onPress={() =>
+          Auth.signOut()
+        }
+      />
     </View>
   );
 }
