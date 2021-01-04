@@ -62,3 +62,6 @@ buck-out/
 # Expo
 .expo/*
 web-build/
+
+# Git error: file size too large, ignore these files
+*.hprof
