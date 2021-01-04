@@ -16,7 +16,7 @@ export default class Mole extends Component {
       <TouchableOpacity onPress={this.onWhack} style={styles.container}>
         <Image
           style={styles.moleImage} 
-          source={require('../images/mole.png')} 
+          source={require('../../images/mole.png')} 
         />
       </TouchableOpacity>
     );

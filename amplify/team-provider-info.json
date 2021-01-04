@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-whackamole-dev-140308-authRole",
+      "UnauthRoleArn": "arn:aws:iam::408657384430:role/amplify-whackamole-dev-140308-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::408657384430:role/amplify-whackamole-dev-140308-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-whackamole-dev-140308-deployment",
+      "UnauthRoleName": "amplify-whackamole-dev-140308-unauthRole",
+      "StackName": "amplify-whackamole-dev-140308",
+      "StackId": "arn:aws:cloudformation:us-east-1:408657384430:stack/amplify-whackamole-dev-140308/8239d3c0-4ebf-11eb-aaab-0a479dbf9bdf",
+      "AmplifyAppId": "d5fse9n3l5vh2"
+    }
+  }
+}
