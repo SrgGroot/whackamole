@@ -3,6 +3,20 @@ import { StyleSheet, View } from 'react-native';
 import Hole from './hole';
 import InfoBar from './infoBar';
 
+// imports from Amplify library
+import { withAuthenticator } from 'aws-amplify-react-native'
+import { API, graphqlOperation } from 'aws-amplify'
+
+// import the GraphQL query
+import { listWhackaMoles } from '../../../graphql/queries'
+// import the GraphQL mutation
+import { createWhackaMole } from '../../../graphql/mutations'
+
+// create client ID
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
+const CLIENTID = uuidv4();
+
 export default class Board extends Component {
   constructor(props) {
     super(props);
@@ -66,6 +80,32 @@ export default class Board extends Component {
     //apply the delay that is set by the user in the main menu
     let delay = this.state.moleDelayMiliseconds; 
     setTimeout( this.changeMoleHole.bind(this, newMoleHole), delay);
+  }
+
+  createScore = async() => {
+    const { name, score, frequency  } = this.state
+    // store the restaurant data in a variable
+    const scoreToBeCreated = {
+      name, score, frequency, clientId: CLIENTID
+    }
+    // perform an optimistic response to update the UI immediately
+    this.setState({
+      name: '', score: '', frequency: ''
+      })
+    try {
+      // make the API call
+      await API.graphql(graphqlOperation(createWhackaMole, {
+        input: scoreToBeCreated
+      }))
+      console.log('score created!')
+    } catch (err) {
+      console.log('error creating score...', err)
+    }
+  }
+
+  // change form state then user types into input
+  onChange = (key, value) => {
+    this.setState({ [key]: value })
   }
 
   render() {
