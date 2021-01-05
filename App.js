@@ -1,41 +1,33 @@
 import 'react-native-gesture-handler';
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 //navigation imports
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { navigationRef } from './src/library/utils/rootNavigation';
 //imports from Amplify library
 import { withAuthenticator } from 'aws-amplify-react-native'
-import { API, graphqlOperation } from 'aws-amplify'
-import { Auth } from '@aws-amplify/auth';
 //import screens
 import Menu from './src/screens/menu';
-import Game from './src/screens/game';
-
-
+import Board from './src/library/components/board';
 
 const Stack = createStackNavigator();
 
-class App extends Component {
-
-  async componentDidMount() {
-    const user = await Auth.currentAuthenticatedUser()
-    console.log('user:', user)
-  }
-  render() {
+class App extends Component {  render() {
     return (
-      <NavigationContainer>
+      <NavigationContainer ref={navigationRef}>
         <Stack.Navigator>
           <Stack.Screen 
             name="Main Menu" 
             component={Menu} 
             options={{ 
-              title: "Main Menu"
+              title: "Main Menu",
+              user: this.props.user
             }}
           />
           <Stack.Screen
             name="Whack-A-Mole"
-            component={Game}
+            component={Board}
             options={{  
               title: "Whack-A-Mole"
             }}

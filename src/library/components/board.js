@@ -7,10 +7,16 @@ import InfoBar from './infoBar';
 import { withAuthenticator } from 'aws-amplify-react-native'
 import { API, graphqlOperation } from 'aws-amplify'
 
+//auth
+import { Auth } from '@aws-amplify/auth';
+
 // import the GraphQL query
 import { listWhackaMoles } from '../../../graphql/queries'
 // import the GraphQL mutation
 import { createWhackaMole } from '../../../graphql/mutations'
+
+//navigation imports
+import * as RootNavigation from '../utils/rootNavigation';
 
 // create client ID
 import 'react-native-get-random-values';
@@ -23,23 +29,31 @@ export default class Board extends Component {
     this.generateRandomMoleHole = this.generateRandomMoleHole.bind(this);
     this.handleWhack = this.handleWhack.bind(this);
 
-    let score = 0
     const startingMoleHole = this.generateRandomMoleHole();
-    
+
     this.state = {
+      name: '',
       gameIsActive: true,
       time: 10,
       currentMoleHole: startingMoleHole,
-      currentScore: score,
-      moleDelayMiliseconds: 300,
+      currentScore: 0,
+      moleDelayMiliseconds: 100,
     };
   }
 
-  componentDidMount() {
+  
+
+  async componentDidMount() {
     this.timerID = setInterval(
       () => this.tick(),
       1000
     );
+
+    //set the user's login name in the state
+    let user = await Auth.currentAuthenticatedUser()
+    this.setState({
+      name: user.username
+    });
   }
 
   componentWillUnmount() {
@@ -48,9 +62,10 @@ export default class Board extends Component {
 
   tick() {
     if (this.state.time <= 0) {
-      this.setState({
-        gameIsActive: false
-      });
+      console.log('tick')
+      this.createScore()
+      clearInterval(this.timerID);
+      RootNavigation.navigate('Main Menu')
     } else { 
       this.setState({
         time: this.state.time - 1
@@ -82,16 +97,13 @@ export default class Board extends Component {
     setTimeout( this.changeMoleHole.bind(this, newMoleHole), delay);
   }
 
-  createScore = async() => {
-    const { name, score, frequency  } = this.state
+  async createScore() {
+    const { name, currentScore, moleDelayMiliseconds  } = this.state
     // store the restaurant data in a variable
     const scoreToBeCreated = {
-      name, score, frequency, clientId: CLIENTID
+      name, score: currentScore, frequency: moleDelayMiliseconds, clientId: CLIENTID
     }
-    // perform an optimistic response to update the UI immediately
-    this.setState({
-      name: '', score: '', frequency: ''
-      })
+    console.log('creating score..')
     try {
       // make the API call
       await API.graphql(graphqlOperation(createWhackaMole, {
@@ -115,6 +127,11 @@ export default class Board extends Component {
           score={this.state.currentScore}
           time={this.state.time}
         />
+        {/*
+        <View style={styles.gameOverContainer}>
+          <Text>Game over, return to the menu</Text>
+        </View>
+        */}
         <View style={styles.boardContainer}>
           <View style={styles.board}>
             <View style={styles.boardRow}>

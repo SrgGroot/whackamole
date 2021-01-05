@@ -2,7 +2,7 @@ type WhackaMole @model {
   id: ID!
   clientId: String
   name: String!
-  description: String!
-  score: String!
-  frequency: String!
+  description: String
+  score: Int!
+  frequency: Int!
 }
