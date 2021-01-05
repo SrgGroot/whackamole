@@ -28,7 +28,12 @@ export default class Board extends Component {
     super(props);
     this.generateRandomMoleHole = this.generateRandomMoleHole.bind(this);
     this.handleWhack = this.handleWhack.bind(this);
+    
+    //Get the frequency the user selected from the route parameters.
+    let { frequency } = props.route.params;
+    frequency = parseInt(frequency, 10);
 
+    //Rnaomdly pick the starting mole hole.
     const startingMoleHole = this.generateRandomMoleHole();
 
     this.state = {
@@ -37,11 +42,9 @@ export default class Board extends Component {
       time: 10,
       currentMoleHole: startingMoleHole,
       currentScore: 0,
-      moleDelayMiliseconds: 100,
+      moleDelayMiliseconds: frequency,
     };
   }
-
-  
 
   async componentDidMount() {
     this.timerID = setInterval(
@@ -62,7 +65,6 @@ export default class Board extends Component {
 
   tick() {
     if (this.state.time <= 0) {
-      console.log('tick')
       this.createScore()
       clearInterval(this.timerID);
       RootNavigation.navigate('Main Menu')
@@ -99,10 +101,10 @@ export default class Board extends Component {
 
   async createScore() {
     const { name, currentScore, moleDelayMiliseconds  } = this.state
-    // store the restaurant data in a variable
     const scoreToBeCreated = {
       name, score: currentScore, frequency: moleDelayMiliseconds, clientId: CLIENTID
     }
+    console.log(scoreToBeCreated);
     console.log('creating score..')
     try {
       // make the API call
