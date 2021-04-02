@@ -1,7 +1,7 @@
 # whackamole
 Whack a mole game hosted on AWS (AWS Amplify) with cognito login, dynamoDB for storage, and graphql API.
 
-Made to apply for the react native developer position at SmartPath. Hope you guys like it!
+Made to apply for a react native developer position. Hope you guys like it!
 
 I have a Windows laptop, so I was not able to develop this for iOS. Please run the game on android for an optimal experience.
 
