@@ -8,7 +8,7 @@ I have a Windows laptop, so I was not able to develop this for iOS. Please run t
 ## Steps to run the react-native app
 
 1) clone the repository
-2) `npm install` and `cd whackamole`
+2) `cd whackamole` and `npm install`
 3) `npm run android` with an android device (with developer options and usb debugging enabled) connected to the computer
 4) run `amplify init` in the root folder of the cloned project You should see the following options provided by the CLI
 ```
